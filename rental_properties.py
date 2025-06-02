@@ -22,6 +22,23 @@ def print_query(view_name:str):
     print(tabulate(results,headings))
     db.close()
 
+TABLES = (" rental_properties "
+            "LEFT JOIN suburb ON rental_properties.suburb_id = suburb.suburb_id "
+            "LEFT JOIN type ON rental_properties.type_id = type.type_id "
+            "LEFT JOIN pets ON rental_properties.pets_id = pets.pets_id ")
+
+
+def print_parameter_query(fields:str, where:str, parameter):
+    """ Prints the results for a parameter query in tabular form. """
+    db = sqlite3.connect(DB_NAME)
+    cursor = db.cursor()
+    sql = ("SELECT " + fields + " FROM " + TABLES + " WHERE " + where)
+    cursor.execute(sql,(parameter,))
+    results = cursor.fetchall()
+    print(tabulate(results,fields.split(",")))
+    db.close()  
+
+
 menu_choice =''
 while menu_choice != 'Z':
     menu_choice = input('Welcome to the Rental Properties database\n\n'
@@ -35,6 +52,8 @@ while menu_choice != 'Z':
                         'G: Properties with the most amount of master beds\n'
                         'H: Total amount of beds for each property\n'
                         'I: Townhouses in Riccarton\n'
+                        'J: Info about a specific property\n'
+                        'K: Properties in a specific suburb\n'
                         'Z: Exit\n\nType option here: ')
     menu_choice = menu_choice.upper()
     if menu_choice == 'A':
@@ -55,3 +74,9 @@ while menu_choice != 'Z':
         print_query('total_beds')
     elif menu_choice == 'I':
         print_query('townhouse_ricc')
+    elif menu_choice == 'J':
+        address = input("Which address do you want to know more about: ")
+        print_parameter_query("address, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "address = ?",address)
+    elif menu_choice == 'K':
+        suburb = input("What suburb do you want to know more about: ")
+        print_parameter_query("address, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "suburb = ?",suburb)
