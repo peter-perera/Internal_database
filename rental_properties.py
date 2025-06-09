@@ -79,4 +79,4 @@ while menu_choice != 'Z':
         print_parameter_query("street_no, street_name, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "street_name = ?",street_name)
     elif menu_choice == 'K':
         suburb = input("What suburb do you want to know more about: ")
-        print_parameter_query("address, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "suburb = ?",suburb)
+        print_parameter_query("street_no, street_name, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "suburb = ?",suburb)
