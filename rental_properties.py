@@ -1,4 +1,4 @@
-# Import the libraries to connect to the database and present the information in tables
+    # Import the libraries to connect to the database and present the information in tables
 import sqlite3
 from tabulate import tabulate
 
@@ -52,7 +52,7 @@ while menu_choice != 'Z':
                         'G: Properties with the most amount of master beds\n'
                         'H: Total amount of beds for each property\n'
                         'I: Townhouses in Riccarton\n'
-                        'J: Info about a specific property\n'
+                        'J: Info about a specific street\n'
                         'K: Properties in a specific suburb\n'
                         'Z: Exit\n\nType option here: ')
     menu_choice = menu_choice.upper()
@@ -75,8 +75,8 @@ while menu_choice != 'Z':
     elif menu_choice == 'I':
         print_query('townhouse_ricc')
     elif menu_choice == 'J':
-        address = input("Which address do you want to know more about: ")
-        print_parameter_query("address, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "address = ?",address)
+        street_name = input("What street  do you want to know more about: ")
+        print_parameter_query("street_no, street_name, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "street_name = ?",street_name)
     elif menu_choice == 'K':
         suburb = input("What suburb do you want to know more about: ")
         print_parameter_query("address, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "suburb = ?",suburb)
