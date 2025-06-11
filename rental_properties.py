@@ -38,6 +38,7 @@ def print_parameter_query(fields:str, where:str, parameter):
     print(tabulate(results,fields.split(",")))
     db.close()  
 
+new_properties = []
 
 menu_choice =''
 while menu_choice != 'Z':
@@ -54,6 +55,7 @@ while menu_choice != 'Z':
                         'I: Townhouses in Riccarton\n'
                         'J: Info about a specific street\n'
                         'K: Properties in a specific suburb\n'
+                        'L: Add data for a new property\n'
                         'Z: Exit\n\nType option here: ')
     menu_choice = menu_choice.upper()
     if menu_choice == 'A':
@@ -80,3 +82,35 @@ while menu_choice != 'Z':
     elif menu_choice == 'K':
         suburb = input("What suburb do you want to know more about: ")
         print_parameter_query("street_no, street_name, suburb, type, masterbed_no, doublebed_no, singlebed_no, bathrooms, parking_space, pets, price_week",  "suburb = ?",suburb)
+    elif menu_choice == 'L':
+        db = sqlite3.connect(DB_NAME)
+        cursor = db.cursor()
+        street_no = input("What is the street number, eg:15c, 11: ")
+        new_properties.append(street_no)
+        street_name = input("What is the street name, eg:Amelia Place: ")
+        new_properties.append(street_name)
+        suburb_id = int(input("What is the suburb id: "))
+        new_properties.append(suburb_id)
+        type_id = int(input("What is the property type id: "))
+        new_properties.append(type_id)
+        masterbed_no = int(input("What is the number of master beds in the property: "))
+        new_properties.append(masterbed_no)
+        doublebed_no = int(input("What is the number of double beds in the property: "))
+        new_properties.append(doublebed_no)
+        singlebed_no = int(input("What is the number of single beds in the property: "))
+        new_properties.append(singlebed_no)
+        bathrooms = int(input("What is the number of bathrooms in the property: "))
+        new_properties.append(bathrooms)
+        parking_space = int(input("How much parking space is available: "))
+        new_properties.append(parking_space)
+        pets_id = int(input("What is the pet id: "))
+        new_properties.append(pets_id)
+        price_week = int(input("What is the price charged per week: "))
+        new_properties.append(price_week)
+        a =  '''INSERT INTO rental_properties(street_no, street_name, suburb_id, type_id, masterbed_no,
+                     doublebed_no, singlebed_no, bathrooms, parking_space, pets_id, price_week) 
+                     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) '''
+
+        cursor.execute(a,new_properties)
+        db.commit()
+        db.close()
